@@ -1,0 +1,46 @@
+prefix: v
+css: palette.css
+n: 3
+colors:
+- "#b80c09"
+- "#ee6c4d"
+- "#0b4f6c"
+- "#01baef"
+- "#ccdbdc"
+- "#6c969d"
+- "#c4ebc8"
+- "#439775"
+- "#f9df74"
+aspects:
+  - name: context
+    values:
+      - text
+      - link
+      - list
+      - action
+  - name: emotions
+    values:
+      - primary
+      - secondary
+      - accent
+      - alert
+      - destructive
+      - success
+      - failure
+      - warning
+areas:
+  head:
+    text-color: red
+
+variables:
+  color: red
+  background-color: white
+  color-hover: white
+  background-color-hover: blue
+  color-selected: white
+  background-color-selected: green
+  border-color: purple
+  border-radius: 3px
+
+scan-dirs:
+- .
