@@ -64,6 +64,7 @@ func (ap *AspectProperty) Value(variable, value string) string {
 	}
 	return value
 }
+
 func (ap *AspectProperty) ParentNames(variable string) []string {
 	if ap.IsRoot() {
 		return []string{ ap.Name(variable) }

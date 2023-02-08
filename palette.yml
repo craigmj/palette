@@ -11,6 +11,7 @@ colors:
 - "#c4ebc8"
 - "#439775"
 - "#f9df74"
+
 aspects:
   - name: context
     values:
@@ -18,7 +19,7 @@ aspects:
       - link
       - list
       - action
-  - name: emotions
+  - name: role
     values:
       - primary
       - secondary
@@ -29,8 +30,10 @@ aspects:
       - failure
       - warning
 areas:
-  head:
-    text-color: red
+  ":root .head":
+      text-color: green
+  ".workspace":
+      link-color: var(--v-c4h3)
 
 variables:
   color: red

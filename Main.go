@@ -2,6 +2,7 @@ package palette
 
 import (
 	`os`
+	`fmt`
 	`flag`
 	`log`
 	// `fmt`
@@ -17,72 +18,17 @@ type Aspect struct {
 	Values []string
 }
 
-type Config struct {
-	Prefix string  // String prefix for all our palette variables
-	// Name of the generated CSS file
-	Css string
-	// 2N+1 colors in the palette
-	N int
-	// Colours to use to generate the 'big' palette
-	Colors []string
-
-	Aspects []*Aspect
-	Areas map[string]map[string]string
-
-	Variables map[string]string
-}
 
 type Var struct {
 	Var string
 	Value string
 }
 
-// NewAspectProperty creates a new Property as a descendant of the parent property
-func (c *Config) NewAspectProperty(parent *AspectProperty, aspectValue string, nextAspectIndex int) *AspectProperty {
-	ap := &AspectProperty {
-		Prefix: c.Prefix,
-		Aspect: aspectValue,
-		Parent: parent,
-		Children: []*AspectProperty{},
-	}
-	if nextAspectIndex == len(c.Aspects) {
-		return ap
-	}
-	// Step through each of the values of the next child aspect, building the tree of each aspect level, with
-	// every sub-branch a sub-branch
-	for _, child := range c.Aspects[nextAspectIndex].Values {
-		ap.Children = append(ap.Children, c.NewAspectProperty(ap, child, nextAspectIndex+1))
-	}
-	return ap
-}
-
-// func (c *Config) ScanForVars() ([]string, error) {
-// 	m := map[string]bool{}
-// 	var pattern string
-// 	if ``!=c.Prefix {
-// 		pattern = fmt.Sprintf(`var\(--(%s-[a-zA-Z_0-9]+)`)
-// 	} else {
-// 		pattern = `var\(--([a-zA-Z_0-9]+)`
-// 	}
-// 	reg, err := regexp.Compile(pattern)
-// 	if nil!=err {
-// 		return nil, fmt.Errorf(`Failed to compile search pattern '%s': %w`, pattern, err)
-// 	}
-	
-// }
-
-func (c *Config) AspectsTree() *AspectProperty {
-	return c.NewAspectProperty(nil, ``, 0)
-}
-
-func (c *Config) Print() {
-	yaml.NewEncoder(os.Stderr).Encode(c)
-}
-
 func Main() {
 	configFile := flag.String(`config`,`palette.yml`,`palette config file`)
+	printDestination := flag.Bool(`print-destination`, false, `Print the destination file and exit`)
+
 	flag.Parse()
-	log.Printf(`Reading config from %s`, *configFile)
 	cin, err := os.Open(*configFile)
 	if nil!=err {
 		log.Fatal(err)
@@ -93,7 +39,12 @@ func Main() {
 	if err := yaml.NewDecoder(cin).Decode(&config); nil!=err {
 		log.Fatal(err)
 	}
-	config.Print()
+	// config.Print()
+
+	if *printDestination {
+		fmt.Print(config.Css)
+		os.Exit(0)
+	}
 
 	if 0==len(config.Colors) {
 		log.Fatalf(`No colors read from config %s`, *configFile)
@@ -133,7 +84,7 @@ func Main() {
 		palette = append(palette, colorSet)
 	}
 
-	// GENEATE OUR TREE OF ASPECTS
+	// GENERATE OUR TREE OF ASPECTS
 	cssTree := config.AspectsTree()
 	// cssTree.Print()
 	cssVars := cssTree.Flatten()
@@ -180,7 +131,7 @@ var _css = template.Must(template.New(``).Parse(`
 {{- end}}{{end}}
 }
 {{ range $area, $vars := .Areas }}
-.{{$area}} {
+{{$area}} {	
 {{ range $prop, $val := $vars}}  --{{$.Prefix}}-{{$prop}}: {{$val}};
 {{end}}
 }
