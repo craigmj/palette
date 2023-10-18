@@ -363,12 +363,12 @@
 --v-action-warning-color-selected: var(--v-action-color-selected, var(--v-color-selected, white));
 }
 
-..workspace {
+.workspace {	
   --v-link-color: var(--v-c4h3);
 
 }
 
-.:root .head {
+:root .head {	
   --v-text-color: green;
 
 }

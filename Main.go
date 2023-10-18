@@ -8,6 +8,7 @@ import (
 	// `fmt`
 	`strings`
 	`text/template`
+	// `path/filepath`
 
 	colorful `github.com/lucasb-eyer/go-colorful`
 	`gopkg.in/yaml.v3`
@@ -42,6 +43,7 @@ func Main() {
 	// config.Print()
 
 	if *printDestination {
+		// cssFile := filepath.Join(filepath.Dir(*configFile), config.Css)
 		fmt.Print(config.Css)
 		os.Exit(0)
 	}
