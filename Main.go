@@ -7,7 +7,7 @@ import (
 	`log`
 	// `fmt`
 	`strings`
-	`html/template`
+	`text/template`
 
 	colorful `github.com/lucasb-eyer/go-colorful`
 	`gopkg.in/yaml.v3`
