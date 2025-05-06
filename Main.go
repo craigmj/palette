@@ -19,17 +19,30 @@ type Aspect struct {
 	Values []string
 }
 
-
 type Var struct {
 	Var string
 	Value string
 }
 
+func doError(err error) {
+	if nil==err {
+		return
+	}
+	fmt.Fprintln(os.Stderr, err.Error())
+	os.Exit(1)
+}
+
 func Main() {
 	configFile := flag.String(`config`,`palette.yml`,`palette config file`)
 	printDestination := flag.Bool(`print-destination`, false, `Print the destination file and exit`)
+	example := flag.Bool(`example`, false, `Create an example palette file`)
 
 	flag.Parse()
+	if *example {
+		doError(yaml.NewEncoder(os.Stdout).Encode(ExampleConfig()))
+		os.Exit(0)
+	}
+
 	cin, err := os.Open(*configFile)
 	if nil!=err {
 		log.Fatal(err)

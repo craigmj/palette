@@ -21,6 +21,33 @@ type Config struct {
 	Variables map[string]string
 }
 
+func ExampleConfig() *Config {
+	cfg := &Config{
+		Prefix: "lt",
+		Css: "main.css",
+		N: 3,
+		Colors: []string{
+			"#ffcc00","#ccff00","#bad",
+		},
+		Aspects: []*Aspect{
+			&Aspect{
+				Name: `context`,
+				Values: []string{
+					`text`,`link`,`header`,`navigation`,
+				},
+			},
+		},
+		Areas: map[string]any{
+			`.root .head`: map[string]any { `text-color`:`green` },
+			`.workspace`: map[string]any{`link-color`: `var(--lt-c1h3)`},
+		},
+		Variables: map[string]string {
+			`color`:`red`,
+			`background-color`:`#000030`,
+		},
+	}
+	return cfg
+}
 
 // NewAspectProperty creates a new Property as a descendant of the parent property
 func (c *Config) NewAspectProperty(parent *AspectProperty, aspectValue string, nextAspectIndex int) *AspectProperty {
